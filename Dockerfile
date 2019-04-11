@@ -1,5 +1,5 @@
 FROM docker:18.06-dind
-LABEL maintainer="devops@foresee.com"
+LABEL maintainer="Karthik Sadhasivam"
 
 ARG user=jenkins
 ARG group=jenkins
