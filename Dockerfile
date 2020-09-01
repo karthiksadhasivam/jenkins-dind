@@ -21,7 +21,7 @@ ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:/usr/lib/jvm/java-1.8-openjdk/jre/bin:/usr/lib/jvm/java-1.8-openjdk/bin
 
 ENV JAVA_VERSION 8u171
-ENV JAVA_ALPINE_VERSION 8.171.11-r0
+ENV JAVA_ALPINE_VERSION 8.252.09-r0
 
 RUN set -x \
 	&& apk add --no-cache \
@@ -44,7 +44,12 @@ RUN apk add --update --no-cache curl bash git openssh-client openssl procps \
   && chmod 755 /usr/share/jenkins \
   && chmod 644 /usr/share/jenkins/slave.jar 
 
-RUN apk add py-pip && pip install docker-compose
+RUN apk add py-pip && pip install --upgrade pip
+
+RUN apk add --no-cache --virtual .build-deps gcc musl-dev python-dev libffi-dev openssl-dev make\
+     && pip install cython && pip install pynacl
+
+RUN pip install docker-compose
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
 RUN apk add maven
